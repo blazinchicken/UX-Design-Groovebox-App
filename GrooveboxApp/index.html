@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<script src="http://unpkg.com/tone"></script>
+<script>const synth = new Tone.Synth().toDestination();</script>
+<script>
+	function getNote() {
+		const note1pitch = document.getElementById('pitch1-input').value;
+		
+		alert(note1pitch);
+	}
+	
+	
+	function playNote(userNote1) {
+		synth.triggerAttackRelease(userNote1, '8n')
+	}
+
+	document.getElementById.('pitch1-input').addEventListener('change', getNote);
+	
+</script>
+	
+<html>
+<body>
+
+<form>
+  <label for="fname">Note Button 1</label><br>
+  <input type="text" id="pitch1-input" name="pitch1-input" size="2" value="C4"><br>
+  <input type="submit" value="Submit" onclick="getNote()">
+</form>
+
+<button type="button"
+onclick="playNote(note1pitch)"</button>
+
+</body>
+</html>
+
+
