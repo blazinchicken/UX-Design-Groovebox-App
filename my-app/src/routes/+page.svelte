@@ -65,10 +65,15 @@
 	
 	let synth = null;
 	const pads = Array(16).fill(0);
+	var note = null;
+	let array = [];
 
 	onMount(() => {	
 		console.log("Component mounted");
 		synth = new Tone.Synth().toDestination();
+		note = "A2";
+		array = ["C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4"];
+
 	});
 	
 	async function play(index) {
@@ -77,14 +82,23 @@
 
 		if (!synth) return;
 			
-		synth.triggerAttackRelease("C4", "8n");
+		synth.triggerAttackRelease(array[index], "8n");
+		console.log("Played note: " + array[index]);
 	}
 
 
 </script>
 <div class="layout">
 	<div class="left">
-		<h2>Drum Machine</h2>
+		<div class="lefttop">
+			<h2>Drum Machine</h2>
+		</div>
+		<div class="leftmid">
+			<h2>Drum Machine</h2>
+		</div>
+		<div class="leftbottom">
+			<h2>Drum Machine</h2>
+		</div>
 	</div>
 	<div class="right">
 		<div class="grid">
@@ -92,7 +106,7 @@
 				<button 
 				aria-label={'Play pad ' + (index + 1)}
 				on:pointerdown={() => play(index)}>
-					{index + 1}
+					{array[index]}
 				</button>
 			{/each}
 		</div>
@@ -107,9 +121,33 @@
 		height:100vh;
 	}
 	.left {
+		display: grid;
+		grid-template-rows: 1fr, 1fr, 1fr;
 		background: #080808;
 		padding: 30px;
 		color: white;
+	}
+	.lefttop {
+		font-size: 24px;
+		font-weight: bold;
+		display: flex;
+		justify-content: flex-start;
+		align-items: flex-start;
+	}
+
+	.leftmid {
+		font-size: 24px;
+		font-weight: bold;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+	.leftbottom {
+		font-size: 24px;
+		font-weight: bold;
+		display: flex;
+		justify-content: flex-start;
+		align-items: flex-end;
 	}
 
 	.right {

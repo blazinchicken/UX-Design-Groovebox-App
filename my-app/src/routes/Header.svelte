@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 </script>
@@ -107,4 +107,4 @@
 	a:hover {
 		color: var(--color-theme-1);
 	}
-</style>
+</style> -->
