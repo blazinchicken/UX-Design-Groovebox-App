@@ -1,103 +1,59 @@
-<!-- <script lang="ts">
-	import welcomeFallback from '$lib/images/svelte-welcome.png';
-	import welcome from '$lib/images/svelte-welcome.webp';
-
-	import Counter from './Counter.svelte';
-</script>
-
-<svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
-</svelte:head>
-
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcomeFallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
-
-<style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
-</style> -->
-
 <script> 
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
+	import { writable } from 'svelte/store';
 	import * as Tone from "tone";
+	import Selector from './Selector.svelte';
 	
-	let synth = null;
+	let synths = {};
 	const pads = Array(16).fill(0);
 	var note = null;
-	let array = [];
+	let array = ["C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4"];
+	let selected1 = null;
+	let selected2 = null;
 
 	onMount(() => {	
 		console.log("Component mounted");
-		synth = new Tone.Synth().toDestination();
+		synths = {
+			piano: new Tone.Synth().toDestination(),
+			guitar: new Tone.PluckSynth().toDestination()
+		};
 		note = "A2";
-		array = ["C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4"];
 
 	});
+
+	const instruments = {
+		top: writable("piano"),
+		bottom: writable("guitar")
+	};
 	
+	const { top, bottom } = instruments;
+
 	async function play(index) {
 		await Tone.start();
+
+		const currentInstrument = $top; 
+		const synth = synths[currentInstrument];
 		console.log("Audio is ready");
 
 		if (!synth) return;
-			
+
 		synth.triggerAttackRelease(array[index], "8n");
-		console.log("Played note: " + array[index]);
+		console.log("Played note: " + array[index] + " on " + currentInstrument);
 	}
 
-
+	setContext("instruments", instruments);
 </script>
 <div class="layout">
 	<div class="left">
 		<div class="lefttop">
-			<h2>Drum Machine</h2>
+			<Selector side="top" />
 		</div>
 		<div class="leftmid">
-			<h2>Drum Machine</h2>
+			<Selector side="bottom" />
 		</div>
 		<div class="leftbottom">
-			<h2>Drum Machine</h2>
+			<h3>M.I.S. </h3>
+				<h2>Multi-Instrument Synthesizer</h2>
 		</div>
 	</div>
 	<div class="right">
@@ -122,7 +78,7 @@
 	}
 	.left {
 		display: grid;
-		grid-template-rows: 1fr, 1fr, 1fr;
+		grid-template-rows: 1fr 1fr 2fr;
 		background: #080808;
 		padding: 30px;
 		color: white;
