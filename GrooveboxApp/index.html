@@ -13,7 +13,9 @@
 		synth.triggerAttackRelease(userNote1, '8n')
 	}
 
-	document.getElementById.('pitch1-input').addEventListener('change', getNote);
+	document.getElementById.('pitch1-input').onclick.value="Submit";
+	
+	var note2pitch = 'A2';
 	
 </script>
 	
@@ -22,12 +24,18 @@
 
 <form>
   <label for="fname">Note Button 1</label><br>
-  <input type="text" id="pitch1-input" name="pitch1-input" size="2" value="C4"><br>
+  <input type="text" id="pitch1-input" name="pitch1-input" maxlength="3" size="3" value="C4"><br>
   <input type="submit" value="Submit" onclick="getNote()">
 </form>
 
 <button type="button"
 onclick="playNote(note1pitch)"</button>
+
+<br>
+
+<!--This will play a note, but it doesn't ever stop playing it for some reason -->
+<button type="button"
+onclick="synth.triggerAttackRelease('note2pitch', '8n')">Sound</button
 
 </body>
 </html>
