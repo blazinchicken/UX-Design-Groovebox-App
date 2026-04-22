@@ -11,11 +11,44 @@
 	let selected1 = null;
 	let selected2 = null;
 
+
 	onMount(() => {	
 		console.log("Component mounted");
 		synths = {
-			piano: new Tone.Synth().toDestination(),
-			guitar: new Tone.PluckSynth().toDestination()
+			piano: new Tone.Synth({}).toDestination(),
+			guitar: new Tone.PluckSynth({
+				resonance: 0.9,
+				dampening: 2000,
+			}).toDestination(),
+			flute: new Tone.FMSynth({
+				harmonicity: 3,
+				modulationIndex: 10,
+				envelope: {
+					attack: 0.01,
+					decay: 0.1,
+					sustain: 0.5,
+					release: 1
+				},
+				octaves: 2.5,
+				modulator: {
+					type: "square"
+				}
+			}).toDestination(),
+			cymbal: new Tone.MetalSynth({
+				frequency: 200,
+				envelope: {
+					attack: 0.001,
+					decay: 1.4,
+					sustain: 0.01,
+					release: 1.4
+				},
+				harmonicity: 5.1,
+				modulationIndex: 32,
+				resonance: 4000,
+				octaves: 1.5,
+				volume: -10
+			}).toDestination()
+
 		};
 		note = "A2";
 
@@ -31,14 +64,24 @@
 	async function play(index) {
 		await Tone.start();
 
-		const currentInstrument = $top; 
-		const synth = synths[currentInstrument];
+		const currentInstrument1 = $top; 
+		const currentInstrument2 = $bottom; 
+		const synth = synths[currentInstrument1];
+		const synth2 = synths[currentInstrument2];
 		console.log("Audio is ready");
 
 		if (!synth) return;
+		if (!synth2) return;
 
-		synth.triggerAttackRelease(array[index], "8n");
-		console.log("Played note: " + array[index] + " on " + currentInstrument);
+		if (currentInstrument1 === currentInstrument2) {
+			synth.triggerAttackRelease(array[index], "4n");
+			console.log("Played note: " + array[index] + " on " + currentInstrument1);
+			return;
+		} else {
+		synth.triggerAttackRelease(array[index], "4n");
+		synth2.triggerAttackRelease(array[index], "4n");
+		console.log("Played note: " + array[index] + " on " + currentInstrument1);
+		}
 	}
 
 	setContext("instruments", instruments);
@@ -75,6 +118,7 @@
 		display: grid;
 		grid-template-columns: 1fr 2fr;
 		height:100vh;
+		width: 100%;
 	}
 	.left {
 		display: grid;
@@ -115,13 +159,13 @@
 	}
 	.grid {
 		display: grid;
-		grid-template-columns: repeat(4, 160px);
+		grid-template-columns: repeat(4, 12rem);
 		grid-gap: 12px;
 	}
 
 	button {
-		width: 160px;
-		height: 160px;
+		width: 12rem;
+		height: 12rem;
 		background: #222;
 		color: rgb(255, 1, 1);
 		border: none;
