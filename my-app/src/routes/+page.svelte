@@ -3,6 +3,21 @@
 	import { writable } from 'svelte/store';
 	import * as Tone from "tone";
 	import Selector from './Selector.svelte';
+	import Tonejs-Instruments.js;
+  
+
+
+    var samples = SampleLibrary.load({
+        instruments: ['piano', 'guitar'],
+        baseUrl: "samples/"
+    })
+	
+	
+	Tone.Buffer.on('load', function() {
+
+     instruments['piano'].toMaster();
+     instruments['piano'].triggerAttack("A3");
+     });
 	
 	let synths = {};
 	const pads = Array(16).fill(0);
