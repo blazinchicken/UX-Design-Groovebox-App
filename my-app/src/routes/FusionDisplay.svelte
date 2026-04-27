@@ -11,6 +11,8 @@
 	let fusionImageUrl: string = '';
 	let canvasRef: HTMLCanvasElement;
 
+	let fusionName: string = '';
+
 	const instrumentImages: Record<string, string> = {
 		piano: pianoImg,
 		guitar: guitarImg,
@@ -63,8 +65,16 @@
 	$: if ($top && $bottom) {
 		createFusionImage($top, $bottom);
 	}
-
-	$: fusionName = generateFusionName($top, $bottom);
+$: fusionName = generateFusionName($top, $bottom);
+	$: if ($top != $bottom) {
+		fusionName = generateFusionName($top, $bottom);
+	}
+	else {
+		fusionName = $top;
+		fusionName = fusionName.toUpperCase();
+		fusionName = fusionName.substring(0, 8);
+		fusionName = fusionName.charAt(0) + fusionName.slice(1).toLowerCase();
+	}
 </script>
 
 <div class="fusion-container">
