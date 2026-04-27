@@ -1,9 +1,10 @@
-<script> 
+<script>
 	import { onMount, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import * as Tone from "tone";
 	import Selector from './Selector.svelte';
-	
+	import { useFloating, flip } from "@skeletonlabs/floating-ui-svelte";
+
 	let synths = {};
 	const pads = Array(16).fill(0);
 	var note = null;
@@ -11,7 +12,25 @@
 	let selected1 = null;
 	let selected2 = null;
 
-	onMount(() => {	
+	let topFloatingEl;
+	let bottomFloatingEl;
+
+	let showTopFloating = false;
+	let showBottomFloating = false;
+
+	const topFloating = useFloating({
+		placement: "top",
+		middleware: [flip()],
+		strategy: "fixed"
+	});
+
+	const bottomFloating = useFloating({
+		placement: "top",
+		middleware: [flip()],
+		strategy: "fixed"
+	});
+
+	onMount(() => {
 		console.log("Component mounted");
 		synths = {
 			piano: new Tone.Synth().toDestination(),
@@ -25,13 +44,13 @@
 		top: writable("piano"),
 		bottom: writable("guitar")
 	};
-	
+
 	const { top, bottom } = instruments;
 
 	async function play(index) {
 		await Tone.start();
 
-		const currentInstrument = $top; 
+		const currentInstrument = $top;
 		const synth = synths[currentInstrument];
 		console.log("Audio is ready");
 
@@ -46,29 +65,98 @@
 <div class="layout">
 	<div class="left">
 		<div class="lefttop">
-			<Selector side="top" />
+			<button class="img-btn main-btn" on:click={()=> {
+				showTopFloating = true;
+				showBottomFloating = false;
+				}}>
+				<img src={`/${$top}.png`} alt={$top} />
+				<span>Top</span>
+			</button>
 		</div>
 		<div class="leftmid">
-			<Selector side="bottom" />
+			<button class="img-btn main-btn" on:click={()=> {
+				showBottomFloating = true;
+				showTopFloating = false;
+				}}>
+				<img src={`/${$bottom}.png`} alt={$bottom} />
+				<span>Bottom</span>
+			</button>
 		</div>
 		<div class="leftbottom">
 			<h3>M.I.S. </h3>
-				<h2>Multi-Instrument Synthesizer</h2>
+			<h2>Multi-Instrument Synthesizer</h2>
 		</div>
 	</div>
 	<div class="right">
 		<div class="grid">
 			{#each pads as _, index}
-				<button 
-				aria-label={'Play pad ' + (index + 1)}
+			<button aria-label={'Play pad ' + (index + 1)}
 				on:pointerdown={() => play(index)}>
 					{array[index]}
 				</button>
 			{/each}
 		</div>
 	</div>
+{#if showTopFloating}
+<div bind:this={topFloating.elements.floating} style="" class="floating" >
+
+	<button class="img-btn" on:click={() => {
+	instruments.top.set("piano");
+	showTopFloating = false;
+}}>
+	<img src="/piano.png" alt="Piano" />
+</button>
+
+	<button class="img-btn" on:click={() => {
+	instruments.top.set("guitar");
+	showTopFloating = false;
+}}>
+	<img src="/guitar.png" alt="Guitar" />
+</button>
+
+	<button on:click={() => showTopFloating = false}>
+		Close
+	</button>
+</div>
+
+{/if}
+
+{#if showBottomFloating}
+<div bind:this={bottomFloating.elements.floating} style="" class="floating" >
+
+	<button class="img-btn" on:click={() => {
+	instruments.bottom.set("piano");
+	showBottomFloating = false;
+}}>
+	<img src="/piano.png" alt="Piano" />
+</button>
+
+	<button class="img-btn" on:click={() => {
+	instruments.bottom.set("guitar");
+	showBottomFloating = false;
+}}>
+	<img src="/guitar.png" alt="Guitar" />
+</button>
+
+	<button on:click={() => showBottomFloating = false}>
+		Close
+	</button>
+</div>
+
+{/if}
+{#if showTopFloating || showBottomFloating}
+<div class="backdrop"></div>
+{/if}
+
+{#if showTopFloating || showBottomFloating}
+	<div class="backdrop" on:click={() => {
+		showTopFloating = false;
+		showBottomFloating = false;
+	}}></div>
+{/if}
 
 </div>
+
 
 <style>
 	.layout {
@@ -129,6 +217,47 @@
 		box-shadow: 0 6px #000000;
 		font-size: 18px;
 	}
+	.floating button {
+		width: 100%;
+		height: auto;
+		padding: 10px;
+		font-size: 16px;
+		box-shadow: none;
+	}
+	.floating {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 1000;
+		width: 320px;
+		background: #111;
+		padding: 20px;
+		border-radius: 12px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+	.backdrop {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.3);
+		backdrop-filter: blur(6px);
+		z-index: 999;
+	}
+	.img-btn {
+	width: 100%;
+	height: auto;
+	background: none;
+	box-shadow: none;
+	padding: 0;
+	border: none;
+	cursor: pointer;
+}
+.img-btn img {
+	width: 100%;
+	height: auto;
+	object-fit: contain;
+	border-radius: 8px;
+}
 </style>
-
-
