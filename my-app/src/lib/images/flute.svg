@@ -1,0 +1,31 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Flute body -->
+  <ellipse cx="100" cy="100" rx="12" ry="50" fill="#C0C0C0" stroke="#A9A9A9" stroke-width="1.5"/>
+  
+  <!-- Mouthpiece -->
+  <ellipse cx="100" cy="40" rx="14" ry="10" fill="#A9A9A9" stroke="#808080" stroke-width="1"/>
+  
+  <!-- Embouchure hole -->
+  <ellipse cx="100" cy="38" rx="6" ry="4" fill="#2a2a2a"/>
+  
+  <!-- Tone holes -->
+  <g fill="#2a2a2a" stroke="#808080" stroke-width="0.5">
+    <circle cx="95" cy="65" r="3.5"/>
+    <circle cx="105" cy="65" r="3.5"/>
+    <circle cx="92" cy="80" r="3.5"/>
+    <circle cx="108" cy="80" r="3.5"/>
+    <circle cx="95" cy="95" r="3.5"/>
+    <circle cx="105" cy="95" r="3.5"/>
+    <circle cx="92" cy="110" r="3.5"/>
+    <circle cx="108" cy="110" r="3.5"/>
+  </g>
+  
+  <!-- End cap -->
+  <ellipse cx="100" cy="145" rx="12" ry="6" fill="#A9A9A9" stroke="#808080" stroke-width="1"/>
+  
+  <!-- Shine effect -->
+  <ellipse cx="98" cy="100" rx="4" ry="35" fill="#FFF" opacity="0.3"/>
+  
+  <!-- Label -->
+  <text x="100" y="175" font-size="14" font-weight="bold" text-anchor="middle" fill="#fff">FLUTE</text>
+</svg>
