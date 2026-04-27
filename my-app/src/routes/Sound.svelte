@@ -16,9 +16,6 @@
 			aria-label={'Play pad ' + (index + 1)}
 			on:pointerdown={() => play(index)}>
 			<span class="note">{array[index]}</span>
-			<span class="instruments">
-				{$top} + {$bottom}
-			</span>
 		</button>
 	{/each}
 </div>
