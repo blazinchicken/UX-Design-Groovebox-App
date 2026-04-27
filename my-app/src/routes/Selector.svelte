@@ -10,4 +10,6 @@
 <select bind:value={$store}>
     <option value="piano">Piano</option>
     <option value="guitar">Guitar</option>
+    <option value="flute">Flute</option>
+    <option value="cymbal">Cymbal</option>
 </select>
