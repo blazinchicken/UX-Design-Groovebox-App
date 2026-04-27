@@ -1,0 +1,35 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Guitar body -->
+  <ellipse cx="100" cy="100" rx="45" ry="55" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+  
+  <!-- Sound hole -->
+  <circle cx="100" cy="85" r="15" fill="#2a2a2a" stroke="#654321" stroke-width="1.5"/>
+  
+  <!-- Neck -->
+  <rect x="92" y="30" width="16" height="75" fill="#D2B48C" stroke="#654321" stroke-width="1"/>
+  
+  <!-- Headstock -->
+  <rect x="80" y="15" width="40" height="20" fill="#8B4513" stroke="#654321" stroke-width="1.5" rx="3"/>
+  
+  <!-- Tuning pegs -->
+  <g fill="#FFD700" stroke="#DAA520" stroke-width="0.5">
+    <circle cx="85" cy="18" r="2"/>
+    <circle cx="92" cy="18" r="2"/>
+    <circle cx="108" cy="18" r="2"/>
+    <circle cx="115" cy="18" r="2"/>
+  </g>
+  
+  <!-- Strings -->
+  <g stroke="#E8E8E8" stroke-width="1" opacity="0.8">
+    <line x1="94" y1="18" x2="94" y2="130"/>
+    <line x1="98" y1="18" x2="98" y2="130"/>
+    <line x1="102" y1="18" x2="102" y2="130"/>
+    <line x1="106" y1="18" x2="106" y2="130"/>
+  </g>
+  
+  <!-- Bridge -->
+  <rect x="95" y="115" width="10" height="8" fill="#654321" stroke="#333" stroke-width="0.5"/>
+  
+  <!-- Label -->
+  <text x="100" y="180" font-size="16" font-weight="bold" text-anchor="middle" fill="#fff">GUITAR</text>
+</svg>
