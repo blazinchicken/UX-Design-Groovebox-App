@@ -65,7 +65,7 @@
 	$: if ($top && $bottom) {
 		createFusionImage($top, $bottom);
 	}
-$: fusionName = generateFusionName($top, $bottom);
+
 	$: if ($top != $bottom) {
 		fusionName = generateFusionName($top, $bottom);
 	}
