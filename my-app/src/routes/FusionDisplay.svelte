@@ -11,7 +11,7 @@
 	let fusionImageUrl: string = '';
 	let canvasRef: HTMLCanvasElement;
 
-	let  fusionName = ''
+	let fusionName: string = '';
 
 	const instrumentImages: Record<string, string> = {
 		piano: pianoImg,
@@ -75,7 +75,6 @@
 		fusionName = fusionName.substring(0, 8);
 		fusionName = fusionName.charAt(0) + fusionName.slice(1).toLowerCase();
 	}
-
 </script>
 
 <div class="fusion-container">
