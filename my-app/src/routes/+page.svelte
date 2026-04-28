@@ -93,6 +93,14 @@
 		}
 	}
 
+	function changeNote(){
+		const noteToChange = parseInt(padSelect.value);
+		const newNote = noteSelect.value;
+		array[noteToChange - 1] = newNote;
+	
+	}
+	
+
 	setContext("instruments", instruments);
 	setContext("audioContext", { play, openModal });
 </script>
@@ -111,7 +119,83 @@
 			<h3>M.I.S. </h3>
 			<h2>Multi-Instrument Synthesizer</h2>
 			<button class="tutorial-btn" on:click={() => (showTutorial = true)}>? Tutorial</button>
-		</div>
+		<p>
+			<select id="padSelect">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+				<option value="13">13</option>
+				<option value="14">14</option>
+				<option value="15">15</option>
+				<option value="16">16</option>
+			</select>
+			
+			<select id="noteSelect">
+				<option value="C0">C0</option>
+				<option value="D0">D0</option>
+				<option value="E0">E0</option>
+				<option value="F0">F0</option>
+				<option value="G0">G0</option>
+				<option value="A0">A0</option>
+				<option value="B0">B0</option>
+				<option value="C1">C1</option>
+				<option value="D1">D1</option>
+				<option value="E1">E1</option>
+				<option value="F1">F1</option>
+				<option value="G1">G1</option>
+				<option value="A1">A1</option>
+				<option value="B1">B1</option>
+				<option value="C2">C2</option>
+				<option value="D2">D2</option>
+				<option value="E2">E2</option>
+				<option value="F2">F2</option>
+				<option value="G2">G2</option>
+				<option value="A2">A2</option>
+				<option value="B2">B2</option>
+				<option value="C3">C3</option>
+				<option value="D3">D3</option>
+				<option value="E3">E3</option>
+				<option value="F3">F3</option>
+				<option value="G3">G3</option>
+				<option value="A3">A3</option>
+				<option value="B3">B3</option>
+				<option value="C4">C4</option>
+				<option value="D4">D4</option>
+				<option value="E4">E4</option>
+				<option value="F4">F4</option>
+				<option value="G4">G4</option>
+				<option value="A4">A4</option>
+				<option value="B4">B4</option>
+				<option value="C5">C5</option>
+				<option value="D5">D5</option>
+				<option value="E5">E5</option>
+				<option value="F5">F5</option>
+				<option value="G5">G5</option>
+				<option value="A5">A5</option>
+				<option value="B5">B5</option>
+				<option value="C6">C6</option>
+				<option value="D6">D6</option>
+				<option value="E6">E6</option>
+				<option value="F6">F6</option>
+				<option value="G6">G6</option>
+				<option value="A6">A6</option>
+				<option value="B6">B6</option>		
+			</select>
+		</p>
+		<button on:click={changeNote}>
+		Change Note
+		</button>
+		
+		</div> 
 	</div>
 	<div class="right">
 		<Sound />
