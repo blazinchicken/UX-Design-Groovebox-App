@@ -3,17 +3,27 @@
 	import { writable } from 'svelte/store';
 	import * as Tone from "tone";
 	import Selector from './Selector.svelte';
-	import Sound from './Sound.svelte';
+
 	import InstrumentModal from './InstrumentModal.svelte';
 	import FusionDisplay from './FusionDisplay.svelte';
 	import Tutorial from './Tutorial.svelte';
+
 	
 	let synths: Record<string, any> = {};
-	let array = ["C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4"];
+	let noteArray = ["C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4"];
 	let note: string | null = null;
 	let openTopModal = false;
 	let showTutorial = false;
 	let openBottomModal = false;
+	let rank = 1;
+	
+	import { getContext } from 'svelte';
+
+
+	let pads = Array(16).fill(0);
+	let padArray = ["C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4"];
+
+
 
 
 	onMount(() => {	
@@ -75,13 +85,13 @@
 		if (!synth2) return;
 
 		if (currentInstrument1 === currentInstrument2) {
-			synth.triggerAttackRelease(array[index], "4n");
-			console.log("Played note: " + array[index] + " on " + currentInstrument1);
+			synth.triggerAttackRelease(noteArray[index], "4n");
+			console.log("Played note: " + noteArray[index] + " on " + currentInstrument1);
 			return;
 		} else {
-			synth.triggerAttackRelease(array[index], "4n");
-			synth2.triggerAttackRelease(array[index], "4n");
-			console.log("Played note: " + array[index] + " on " + currentInstrument1 + " + " + currentInstrument2);
+			synth.triggerAttackRelease(noteArray[index], "4n");
+			synth2.triggerAttackRelease(noteArray[index], "4n");
+			console.log("Played note: " + noteArray[index] + " on " + currentInstrument1 + " + " + currentInstrument2);
 		}
 	}
 
@@ -96,7 +106,8 @@
 	function changeNote(){
 		const noteToChange = parseInt(padSelect.value);
 		const newNote = noteSelect.value;
-		array[noteToChange - 1] = newNote;
+		noteArray[noteToChange - 1] = newNote;
+		padArray[noteToChange - 1] = newNote;
 	
 	}
 	
@@ -140,16 +151,6 @@
 			</select>
 			
 			<select id="noteSelect">
-				<option value="C0">C0</option>
-				<option value="D0">D0</option>
-				<option value="E0">E0</option>
-				<option value="F0">F0</option>
-				<option value="G0">G0</option>
-				<option value="A0">A0</option>
-				<option value="B0">B0</option>
-				<option value="C1">C1</option>
-				<option value="D1">D1</option>
-				<option value="E1">E1</option>
 				<option value="F1">F1</option>
 				<option value="G1">G1</option>
 				<option value="A1">A1</option>
@@ -177,18 +178,6 @@
 				<option value="B4">B4</option>
 				<option value="C5">C5</option>
 				<option value="D5">D5</option>
-				<option value="E5">E5</option>
-				<option value="F5">F5</option>
-				<option value="G5">G5</option>
-				<option value="A5">A5</option>
-				<option value="B5">B5</option>
-				<option value="C6">C6</option>
-				<option value="D6">D6</option>
-				<option value="E6">E6</option>
-				<option value="F6">F6</option>
-				<option value="G6">G6</option>
-				<option value="A6">A6</option>
-				<option value="B6">B6</option>		
 			</select>
 		</p>
 		<button on:click={changeNote}>
@@ -198,7 +187,17 @@
 		</div> 
 	</div>
 	<div class="right">
-		<Sound />
+		<div class="grid-{rank}">
+			{#each pads as _, index}
+				<button 
+					class="pad"
+			
+					aria-label={'Play pad ' + (index + 1)}
+					on:pointerdown={() => play(index)}>
+					<span class="note">{padArray[index]}</span>
+				</button>
+			{/each}
+		</div>
 	</div>
 
 </div>
@@ -281,6 +280,50 @@
 		justify-content: center;
 		align-items: center;
 		background: #c2baba;
+	}
+	
+		.grid-1 {
+		display: grid;
+		grid-template-columns: repeat(4, 12rem);
+		grid-gap: 12px;
+	}
+
+	.pad {
+		width: 12rem;
+		height: 12rem;
+		background: #222;
+		color: rgb(255, 1, 1);
+		border: none;
+		border-radius: 12px;
+		box-shadow: 0 6px #000000;
+		font-size: 18px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 8px;
+		cursor: pointer;
+		transition: all 0.1s ease;
+		font-weight: bold;
+	}
+
+	.pad:active {
+		box-shadow: 0 2px #000000;
+		transform: translateY(4px);
+	}
+
+	.pad:hover {
+		background: #333;
+	}
+
+	.note {
+		font-size: 28px;
+		font-weight: bold;
+	}
+
+	.instruments {
+		font-size: 12px;
+		opacity: 0.8;
 	}
 </style>
 
