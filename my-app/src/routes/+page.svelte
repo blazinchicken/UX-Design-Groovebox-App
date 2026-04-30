@@ -15,7 +15,7 @@
 	let openTopModal = false;
 	let showTutorial = false;
 	let openBottomModal = false;
-	let rank = 1;
+	
 	
 	import { getContext } from 'svelte';
 
@@ -187,7 +187,7 @@
 		</div> 
 	</div>
 	<div class="right">
-		<div class="grid-{rank}">
+		<div class="grid">
 			{#each pads as _, index}
 				<button 
 					class="pad"
@@ -282,7 +282,7 @@
 		background: #c2baba;
 	}
 	
-		.grid-1 {
+	.grid {
 		display: grid;
 		grid-template-columns: repeat(4, 12rem);
 		grid-gap: 12px;
