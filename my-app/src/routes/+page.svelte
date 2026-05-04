@@ -3,17 +3,27 @@
 	import { writable } from 'svelte/store';
 	import * as Tone from "tone";
 	import Selector from './Selector.svelte';
-	import Sound from './Sound.svelte';
+
 	import InstrumentModal from './InstrumentModal.svelte';
 	import FusionDisplay from './FusionDisplay.svelte';
 	import Tutorial from './Tutorial.svelte';
+
 	
 	let synths: Record<string, any> = {};
-	let array = ["C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4"];
+	let noteArray = ["C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4"];
 	let note: string | null = null;
 	let openTopModal = false;
 	let showTutorial = false;
 	let openBottomModal = false;
+	
+	
+	import { getContext } from 'svelte';
+
+
+	let pads = Array(16).fill(0);
+	let padArray = ["C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4"];
+
+
 
 
 	onMount(() => {	
@@ -75,13 +85,13 @@
 		if (!synth2) return;
 
 		if (currentInstrument1 === currentInstrument2) {
-			synth.triggerAttackRelease(array[index], "4n");
-			console.log("Played note: " + array[index] + " on " + currentInstrument1);
+			synth.triggerAttackRelease(noteArray[index], "4n");
+			console.log("Played note: " + noteArray[index] + " on " + currentInstrument1);
 			return;
 		} else {
-			synth.triggerAttackRelease(array[index], "4n");
-			synth2.triggerAttackRelease(array[index], "4n");
-			console.log("Played note: " + array[index] + " on " + currentInstrument1 + " + " + currentInstrument2);
+			synth.triggerAttackRelease(noteArray[index], "4n");
+			synth2.triggerAttackRelease(noteArray[index], "4n");
+			console.log("Played note: " + noteArray[index] + " on " + currentInstrument1 + " + " + currentInstrument2);
 		}
 	}
 
@@ -92,6 +102,15 @@
 			openBottomModal = true;
 		}
 	}
+
+	function changeNote(){
+		const noteToChange = parseInt(padSelect.value);
+		const newNote = noteSelect.value;
+		noteArray[noteToChange - 1] = newNote;
+		padArray[noteToChange - 1] = newNote;
+	
+	}
+	
 
 	setContext("instruments", instruments);
 	setContext("audioContext", { play, openModal });
@@ -111,10 +130,74 @@
 			<h3>M.I.S. </h3>
 			<h2>Multi-Instrument Synthesizer</h2>
 			<button class="tutorial-btn" on:click={() => (showTutorial = true)}>? Tutorial</button>
-		</div>
+		<p>
+			<select id="padSelect">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+				<option value="13">13</option>
+				<option value="14">14</option>
+				<option value="15">15</option>
+				<option value="16">16</option>
+			</select>
+			
+			<select id="noteSelect">
+				<option value="F1">F1</option>
+				<option value="G1">G1</option>
+				<option value="A1">A1</option>
+				<option value="B1">B1</option>
+				<option value="C2">C2</option>
+				<option value="D2">D2</option>
+				<option value="E2">E2</option>
+				<option value="F2">F2</option>
+				<option value="G2">G2</option>
+				<option value="A2">A2</option>
+				<option value="B2">B2</option>
+				<option value="C3">C3</option>
+				<option value="D3">D3</option>
+				<option value="E3">E3</option>
+				<option value="F3">F3</option>
+				<option value="G3">G3</option>
+				<option value="A3">A3</option>
+				<option value="B3">B3</option>
+				<option value="C4">C4</option>
+				<option value="D4">D4</option>
+				<option value="E4">E4</option>
+				<option value="F4">F4</option>
+				<option value="G4">G4</option>
+				<option value="A4">A4</option>
+				<option value="B4">B4</option>
+				<option value="C5">C5</option>
+				<option value="D5">D5</option>
+			</select>
+		</p>
+		<button on:click={changeNote}>
+		Change Note
+		</button>
+		
+		</div> 
 	</div>
 	<div class="right">
-		<Sound />
+		<div class="grid">
+			{#each pads as _, index}
+				<button 
+					class="pad"
+			
+					aria-label={'Play pad ' + (index + 1)}
+					on:pointerdown={() => play(index)}>
+					<span class="note">{padArray[index]}</span>
+				</button>
+			{/each}
+		</div>
 	</div>
 
 </div>
@@ -197,6 +280,50 @@
 		justify-content: center;
 		align-items: center;
 		background: #c2baba;
+	}
+	
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(4, 12rem);
+		grid-gap: 12px;
+	}
+
+	.pad {
+		width: 12rem;
+		height: 12rem;
+		background: #222;
+		color: rgb(255, 1, 1);
+		border: none;
+		border-radius: 12px;
+		box-shadow: 0 6px #000000;
+		font-size: 18px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 8px;
+		cursor: pointer;
+		transition: all 0.1s ease;
+		font-weight: bold;
+	}
+
+	.pad:active {
+		box-shadow: 0 2px #000000;
+		transform: translateY(4px);
+	}
+
+	.pad:hover {
+		background: #333;
+	}
+
+	.note {
+		font-size: 28px;
+		font-weight: bold;
+	}
+
+	.instruments {
+		font-size: 12px;
+		opacity: 0.8;
 	}
 </style>
 
