@@ -5,6 +5,7 @@
 	import Selector from './Selector.svelte';
 	
 	let synths = {};
+	let vibrato;
 	const pads = Array(16).fill(0);
 	var note = null;
 	let array = ["C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4"];
@@ -14,26 +15,39 @@
 
 	onMount(() => {	
 		console.log("Component mounted");
+
+		vibrato = new Tone.Vibrato({
+			frequency: 5,
+			depth: 0.1,
+			type: "sine"
+		}).toDestination();
+
 		synths = {
-			piano: new Tone.Synth({}).toDestination(),
+			piano: new Tone.Synth({
+				oscillator: {
+					type: "triangle"
+				},
+				envelope: {
+					attack: 0.005,
+					decay: 0.3,
+					sustain: 0.2,
+					release: 1
+				}
+			}).toDestination(),
 			guitar: new Tone.PluckSynth({
 				resonance: 0.9,
 				dampening: 2000,
 			}).toDestination(),
-			flute: new Tone.FMSynth({
-				harmonicity: 3,
-				modulationIndex: 10,
-				envelope: {
-					attack: 0.01,
-					decay: 0.1,
-					sustain: 0.5,
-					release: 1
+			flute: new Tone.AMSynth({
+				oscillator: {
+					type: "sine"
 				},
-				octaves: 2.5,
-				modulator: {
-					type: "square"
+				envelope: {
+					attack: 0.1,
+					sustain: 0.9,
+					release: 0.5
 				}
-			}).toDestination(),
+			}).connect(vibrato),
 			cymbal: new Tone.MetalSynth({
 				frequency: 200,
 				envelope: {
@@ -47,6 +61,19 @@
 				resonance: 4000,
 				octaves: 1.5,
 				volume: -10
+			}).toDestination(),
+			kick: new Tone.MembraneSynth({
+				pitchDecay: 0.02,
+				octaves: 4,
+				oscillator: {
+					type: "sine"
+				},
+				envelope: {
+					attack: 0.001,
+					decay: 0.25,
+					sustain: 0,
+					release: 0.1
+				}
 			}).toDestination()
 
 		};
